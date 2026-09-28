@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\Enums\" />
+    <Folder Include="Service\" />
+    <Folder Include="Repository\" />
+  </ItemGroup>
+
 </Project>
