@@ -5,7 +5,7 @@ using Assessment2.Repository;
 using Assessment2.Service;
 using Assessment2.View;
 
-namespace Assessment_2
+namespace Assessment2
 {
     internal class Program
     {

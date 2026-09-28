@@ -3,6 +3,9 @@ using System.Threading;
 using Assessment2.Model;
 using Assessment2.Model.Enums;
 using Assessment2.Repository;
+using Assessment2.Model;
+using Assessment2.Model.Enums;
+using Assessment2.Repository;
 
 namespace Assessment2.Service
 {
@@ -123,10 +126,10 @@ namespace Assessment2.Service
                     LogEvent("Stop failed", "Already Lockout");
                     return;
                 }
-                _boiler.Status = BoilerStatus.Ready;
+                _boiler.Status = BoilerStatus.Lockout;
             }
 
-            LogEvent("Boiler Stopped", "Transitioned to Ready");
+            LogEvent("Boiler Stopped", "Transitioned to Lockout");
         }
 
         /// <summary>
@@ -143,7 +146,6 @@ namespace Assessment2.Service
                     return;
                 }
                 _boiler.Status = BoilerStatus.Lockout;
-                _boiler.Interlock = SwitchState.Closed;
             }
 
             LogEvent("Error", "User simulated error. System in Lockout.");
@@ -212,22 +214,21 @@ namespace Assessment2.Service
             for (int secondsRemaining = durationSeconds; secondsRemaining > 0; secondsRemaining--)
             {
                 Console.Write($"\r{phaseName} - {secondsRemaining} second(s) remaining. Press 'E' to simulate error.     ");
-                Console.Write("Press 'S' to stop boiler");
-
+                Console.WriteLine("Press 'S' to stop.");
                 DateTime phaseEndTime = DateTime.Now.AddSeconds(1);
                 while (DateTime.Now < phaseEndTime)
                 {
                     if (Console.KeyAvailable)
                     {
                         ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-                        if (keyInfo.Key == ConsoleKey.S)
-                        {
-                            Stop();
-                            return;
-                        }
                         if (keyInfo.Key == ConsoleKey.E)
                         {
                             HandlePhaseError(phaseName);
+                            return;
+                        }
+                        if (keyInfo.Key == ConsoleKey.S)
+                        {
+                            Stop();
                             return;
                         }
                     }
